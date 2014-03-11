@@ -1,4 +1,45 @@
-   
+* Определение последовательных портов в системе
+
+** Linux
+   Код на Tcl:
+
+#+BEGIN_EXAMPLE Tcl
+proc getPorts {} {
+    set f [open /proc/tty/drivers r]
+    set lines [split [read $f] \n]
+    chan close $f
+
+    set ports [list]
+    foreach driver $lines {
+        if {[lindex $driver 4] eq "serial"} {
+            lappend ports {*}[glob -nocomplain "[lindex $driver 1]\[0-9\]*"]
+        }
+    }
+    return [lsort -dict $ports]
+}
+#+END_EXAMPLE
+
+
+** Windows
+   Код на Tcl:
+
+#+BEGIN_EXAMPLE Tcl
+proc getPorts {} {
+    set serial_base "HKEY_LOCAL_MACHINE\\HARDWARE\\DEVICEMAP\\SERIALCOMM"
+    set result {}
+
+    catch {
+        set values [registry values $serial_base]
+
+        foreach valueName $values {
+            lappend result [registry get $serial_base $valueName]
+        }
+    }
+
+    return $result
+}
+#+END_EXAMPLE
+
 
 * Схема работы
   Работа через одну очередь команд.
