@@ -1,7 +1,7 @@
-* Определение последовательных портов в системе
+* Detect avaialble serial ports
 
 ** Linux
-   Код на Tcl:
+   Tcl code:
 
 #+BEGIN_EXAMPLE Tcl
 proc getPorts {} {
@@ -21,7 +21,7 @@ proc getPorts {} {
 
 
 ** Windows
-   Код на Tcl:
+   Tcl code:
 
 #+BEGIN_EXAMPLE Tcl
 proc getPorts {} {
@@ -41,12 +41,11 @@ proc getPorts {} {
 #+END_EXAMPLE
 
 
-* Схема работы
-  Работа через одну очередь команд.
-  Команды из файлы ставяться в очередь.
-  [[Экстренные команды]] вне очереди и могут влиять на очередь, например, отменять все команды в очереди.
-  Точка ожидания ответа контроллера должна быть одна.
-
+* Work scheme
+  Work using one queue of commands.
+  Commands from file move to queue.
+  [[Speciel commands]] processed without queue and may modify queue. For example - clear the queue.
+  It should be one point of processing microcontroller responses.
 
 ** Алгоритм
    - При подключении или сбросе появляется [[Баннер][баннер]]
